@@ -2,9 +2,10 @@ import { useParams, useNavigate } from 'react-router-dom'
 import { Container, Row, Col, Button } from 'react-bootstrap'
 import { campsites } from '../campsites'
 import Stars from '../components/Stars'
-import ReviewCard from '../components/ReviewCard'
+import ReviewList from '../components/ReviewList'
+import ReviewForm from '../components/ReviewForm'
 
-export default function DetailPage({ saved, onSave, compared, onCompare }) {
+export default function DetailPage({ saved, onSave, compared, onCompare, userReviews, onAddReview }) {
   const { id } = useParams()
   const navigate = useNavigate()
   const camp = campsites.find(c => c.id === Number(id))
@@ -16,8 +17,9 @@ export default function DetailPage({ saved, onSave, compared, onCompare }) {
     </Container>
   )
 
-  const isSaved = saved.some(s => s.id === camp.id)
+  const isSaved    = saved.some(s => s.id === camp.id)
   const isCompared = compared.some(c => c.id === camp.id)
+  const myReviews  = userReviews[camp.id] || []
 
   return (
     <div>
@@ -38,7 +40,7 @@ export default function DetailPage({ saved, onSave, compared, onCompare }) {
             <div className="d-flex align-items-center gap-3 mt-2 flex-wrap">
               <Stars rating={camp.rating} />
               <span style={{ fontSize: '0.85rem', color: 'var(--smoke)' }}>
-                ({camp.reviews} reviews)
+                ({camp.reviews + myReviews.length} reviews)
               </span>
               <div className="camp-tags mb-0">
                 {camp.tags.map(t => <span key={t} className="camp-tag">{t}</span>)}
@@ -90,12 +92,14 @@ export default function DetailPage({ saved, onSave, compared, onCompare }) {
               ))}
             </div>
           </Col>
+
           <Col md={5}>
-            <div className="section-label mb-2">Recent Reviews</div>
-            <div className="d-flex flex-column gap-3">
-              {camp.reviews_list.map((r, i) => (
-                <ReviewCard key={i} review={r} />
-              ))}
+            <ReviewList
+              staticReviews={camp.reviews_list}
+              userReviews={myReviews}
+            />
+            <div className="mt-4">
+              <ReviewForm campId={camp.id} onSubmit={onAddReview} />
             </div>
           </Col>
         </Row>
