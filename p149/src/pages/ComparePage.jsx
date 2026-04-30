@@ -37,10 +37,10 @@ export default function ComparePage({ compared, onRemove }) {
     return (
       <Container className="py-5">
         <div className="section-label">Side-by-Side</div>
-        <h2 className="section-title mb-4">Compare Campsites</h2>
+        <h1 className="section-title mb-4">Compare Campsites</h1>
         <div className="saved-empty">
           <div className="empty-icon">⚖️</div>
-          <h3>Nothing to compare yet</h3>
+          <h2 className="h4">Nothing to compare yet</h2>
           <p>
             Hit the <strong>⊕</strong> button on any campsite card or detail page to add it here.
             You can compare up to 3 campsites side by side.
@@ -62,7 +62,7 @@ export default function ComparePage({ compared, onRemove }) {
   return (
     <Container className="py-5">
       <div className="section-label">Side-by-Side</div>
-      <h2 className="section-title mb-2">Compare Campsites</h2>
+      <h1 className="section-title mb-2">Compare Campsites</h1>
       <p style={{ color: 'var(--smoke)', fontSize: '0.9rem', marginBottom: '2rem' }}>
         Comparing {compared.length} campsite{compared.length > 1 ? 's' : ''}.
         Green highlights indicate the best value in each category.

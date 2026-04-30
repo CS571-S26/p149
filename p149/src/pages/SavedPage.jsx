@@ -5,12 +5,12 @@ export default function SavedPage({ saved, onRemove, compared, onCompare }) {
   return (
     <Container className="py-5">
       <div className="section-label">Your Collection</div>
-      <h2 className="section-title mb-4">Saved Campsites</h2>
+      <h1 className="section-title mb-4">Saved Campsites</h1>
 
       {saved.length === 0 ? (
         <div className="saved-empty">
           <div className="empty-icon">🏕️</div>
-          <h3>No saved camps yet</h3>
+          <h2 className="h4">No saved camps yet</h2>
           <p>Hit the ♡ button on any campsite card to save it here.</p>
         </div>
       ) : (

@@ -14,9 +14,9 @@ import RegisterPage from './pages/RegisterPage'
 import { campsites } from './Campsites'
 import { useAuth } from './context/AuthContext'
 
-const REVIEWS_STORAGE_KEY = 'hikefinder-reviews'
-const SAVED_STORAGE_PREFIX = 'hikefinder-saved'
-const COMPARE_STORAGE_PREFIX = 'hikefinder-compare'
+const REVIEWS_STORAGE_KEY = 'campfinder-reviews'
+const SAVED_STORAGE_PREFIX = 'campfinder-saved'
+const COMPARE_STORAGE_PREFIX = 'campfinder-compare'
 
 function storageKey(prefix, userId) {
   return `${prefix}-${userId}`

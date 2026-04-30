@@ -19,7 +19,7 @@ export default function SearchPage({ saved, onSave, compared, onCompare }) {
   const [filters, setFilters] = useState({
     tags: [],
     maxPrice: 40,
-    minSites: 0,
+    minSites: 5,
     minRating: 0,
   })
   const [page, setPage] = useState(1)
@@ -45,7 +45,7 @@ export default function SearchPage({ saved, onSave, compared, onCompare }) {
   const activeFilterCount =
     filters.tags.length +
     (filters.maxPrice < 40 ? 1 : 0) +
-    (filters.minSites > 0 ? 1 : 0) +
+    (filters.minSites > 5 ? 1 : 0) +
     (filters.minRating > 0 ? 1 : 0)
 
   const handleSearch = e => {
@@ -61,7 +61,7 @@ export default function SearchPage({ saved, onSave, compared, onCompare }) {
     setFilters({
       tags: [],
       maxPrice: 40,
-      minSites: 0,
+      minSites: 5,
       minRating: 0,
     })
     setPage(1)

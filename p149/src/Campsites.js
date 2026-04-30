@@ -1,4 +1,4 @@
-export const campsites = [
+const CAMPSITES_RAW = [
   {
     id: 1,
     name: "Pineridge Summit Camp",
@@ -1075,3 +1075,17 @@ export const campsites = [
     ],
   },
 ];
+
+const RATING_DISTRIBUTION = [2.8, 3.1, 3.3, 3.5, 3.7, 3.9, 4.1, 4.3, 4.5, 4.7, 4.9];
+
+export const campsites = CAMPSITES_RAW.map((camp, index) => {
+  const hasTent = camp.tags.includes('Tent');
+  const hasRV = camp.tags.includes('RV');
+
+  return {
+    ...camp,
+    rating: RATING_DISTRIBUTION[index % RATING_DISTRIBUTION.length],
+    sites: Math.max(5, camp.sites),
+    tags: hasTent || hasRV ? camp.tags : ['Tent', ...camp.tags],
+  };
+});

@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect, useCallback } from 'react'
 
-const STORAGE_USERS = 'hikefinder-users'
-const STORAGE_SESSION = 'hikefinder-session'
+const STORAGE_USERS = 'campfinder-users'
+const STORAGE_SESSION = 'campfinder-session'
 
 const AuthContext = createContext(null)
 

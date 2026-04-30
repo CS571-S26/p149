@@ -58,7 +58,7 @@ export default function SearchHero({ inputVal, setInput, onSearch }) {
               </div>
               <div style={{
                 fontSize: '0.72rem',
-                color: 'rgba(245,240,232,0.55)',
+                color: 'rgba(245,240,232,0.86)',
                 textTransform: 'uppercase',
                 letterSpacing: '0.08em',
                 marginTop: '3px',

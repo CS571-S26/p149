@@ -70,7 +70,7 @@ export default function FilterMenu({ show, onToggle, filters, onApply, onClear, 
               <Form.Group className="mb-4" controlId="filter-min-sites">
                 <Form.Label className="fw-semibold">Minimum number of sites: {draft.minSites}</Form.Label>
                 <Form.Range
-                  min={0}
+                  min={5}
                   max={100}
                   step={5}
                   value={draft.minSites}
@@ -97,7 +97,7 @@ export default function FilterMenu({ show, onToggle, filters, onApply, onClear, 
             setDraft({
               tags: [],
               maxPrice: 40,
-              minSites: 0,
+              minSites: 5,
               minRating: 0,
             })
           }}

@@ -12,7 +12,7 @@ export default function AppFooter() {
   return (
     <footer style={{
       background: 'var(--forest)',
-      color: 'rgba(245,240,232,0.75)',
+      color: 'rgba(245,240,232,0.92)',
       marginTop: '60px',
       paddingTop: '48px',
       paddingBottom: '28px',
@@ -29,7 +29,7 @@ export default function AppFooter() {
               alignItems: 'center',
               gap: '8px',
             }}>
-              <span aria-hidden="true">🏕️</span> HikeFinder
+              <span aria-hidden="true">🏕️</span> Campfinder
             </div>
             <p style={{ fontSize: '0.85rem', lineHeight: 1.65, maxWidth: '260px' }}>
               Compare frontcountry and backcountry camps you can use as a base for day hikes and longer trips.
@@ -41,7 +41,7 @@ export default function AppFooter() {
               fontSize: '0.72rem',
               textTransform: 'uppercase',
               letterSpacing: '0.1em',
-              color: 'var(--sage)',
+              color: 'rgba(245,240,232,0.88)',
               fontWeight: 600,
               marginBottom: '12px',
             }}>
@@ -58,7 +58,7 @@ export default function AppFooter() {
                   to={to}
                   end={to === '/'}
                   style={({ isActive }) => ({
-                    color: isActive ? 'var(--sand)' : 'rgba(245,240,232,0.65)',
+                    color: isActive ? 'var(--sand)' : 'rgba(245,240,232,0.9)',
                     textDecoration: 'none',
                     fontSize: '0.88rem',
                     transition: 'color 0.15s',
@@ -75,7 +75,7 @@ export default function AppFooter() {
               fontSize: '0.72rem',
               textTransform: 'uppercase',
               letterSpacing: '0.1em',
-              color: 'var(--sage)',
+              color: 'rgba(245,240,232,0.88)',
               fontWeight: 600,
               marginBottom: '12px',
             }}>
@@ -122,9 +122,9 @@ export default function AppFooter() {
           flexWrap: 'wrap',
           gap: '8px',
           fontSize: '0.78rem',
-          color: 'rgba(245,240,232,0.4)',
+          color: 'rgba(245,240,232,0.82)',
         }}>
-          <span>© {new Date().getFullYear()} HikeFinder</span>
+          <span>© {new Date().getFullYear()} Campfinder</span>
           <span>CS571 demo — client-side only</span>
         </div>
       </Container>

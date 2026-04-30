@@ -13,7 +13,7 @@ export default function DetailPage({ saved, onSave, compared, onCompare, userRev
 
   if (!camp) return (
     <Container className="py-5 text-center">
-      <h2>Campsite not found</h2>
+      <h1 className="h3">Campsite not found</h1>
       <Button onClick={() => navigate('/')} className="mt-3">← Back to Explore</Button>
     </Container>
   )

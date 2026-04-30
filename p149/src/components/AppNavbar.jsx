@@ -8,7 +8,7 @@ export default function AppNavbar({ savedCount, compareCount }) {
       <Container>
         <Navbar.Brand as={NavLink} to="/">
           <span className="brand-icon" aria-hidden="true">🏕️</span>
-          HikeFinder
+          Campfinder
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="main-nav" />
         <Navbar.Collapse id="main-nav">
