@@ -1,6 +1,6 @@
 import { useParams, useNavigate } from 'react-router-dom'
 import { Container, Row, Col, Button } from 'react-bootstrap'
-import { campsites } from '../campsites'
+import { campsites } from '../Campsites'
 import Stars from '../components/Stars'
 import ReviewList from '../components/ReviewList'
 import ReviewForm from '../components/ReviewForm'

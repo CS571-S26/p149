@@ -1,5 +1,5 @@
 import { Button, Container } from 'react-bootstrap'
-import { campsites } from '../campsites'
+import { campsites } from '../Campsites'
 
 const totalReviews = campsites.reduce((sum, c) => sum + c.reviews, 0)
 const states = new Set(campsites.map(c => c.state)).size

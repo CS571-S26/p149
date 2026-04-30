@@ -1,55 +1,112 @@
-import { useState, useMemo } from 'react'
-import { Container, Row, Col } from 'react-bootstrap'
-import { campsites } from '../campsites'
+import { useState, useMemo, useEffect } from 'react'
+import { Container, Row, Col, Button } from 'react-bootstrap'
+import { campsites } from '../Campsites'
 import CampCard from '../components/CampCard'
 import SearchHero from '../components/SearchHero'
-import FilterBar from '../components/FilterBar'
 import CampPagination from '../components/CampPagination'
+import FilterMenu from '../components/FilterMenu'
 
 const SITES_PER_PAGE = 6
+const ALL_TAGS = [
+  'Tent', 'RV', 'Family', 'Pet-Friendly', 'Hiking', 'Fishing',
+  'Stargazing', 'Wildlife', 'Backcountry', 'Ocean Views', 'Fall Foliage', 'Paddling'
+]
 
 export default function SearchPage({ saved, onSave, compared, onCompare }) {
-  const [query,    setQuery]  = useState('')
-  const [inputVal, setInput]  = useState('')
-  const [activeTag, setTag]   = useState(null)
-  const [page,     setPage]   = useState(1)
+  const [inputVal, setInput] = useState('')
+  const [query, setQuery] = useState('')
+  const [showFilters, setShowFilters] = useState(false)
+  const [filters, setFilters] = useState({
+    tags: [],
+    maxPrice: 40,
+    minSites: 0,
+    minRating: 0,
+  })
+  const [page, setPage] = useState(1)
 
   const filtered = useMemo(() => campsites.filter(c => {
-    const q = query.toLowerCase()
+    const q = query.trim().toLowerCase()
     const matchQ = !q ||
       c.name.toLowerCase().includes(q) ||
       c.location.toLowerCase().includes(q) ||
       c.state.toLowerCase().includes(q) ||
       c.tags.some(t => t.toLowerCase().includes(q))
-    const matchTag = !activeTag || c.tags.includes(activeTag)
-    return matchQ && matchTag
-  }), [query, activeTag])
+    const priceVal = Number(c.price.replace(/[^0-9.]/g, ''))
+    const matchTags =
+      filters.tags.length === 0 || filters.tags.every(tag => c.tags.includes(tag))
+    const matchPrice = priceVal <= filters.maxPrice
+    const matchSites = c.sites >= filters.minSites
+    const matchRating = c.rating >= filters.minRating
+    return matchQ && matchTags && matchPrice && matchSites && matchRating
+  }), [query, filters])
 
   const totalPages = Math.ceil(filtered.length / SITES_PER_PAGE)
   const paged = filtered.slice((page - 1) * SITES_PER_PAGE, page * SITES_PER_PAGE)
+  const activeFilterCount =
+    filters.tags.length +
+    (filters.maxPrice < 40 ? 1 : 0) +
+    (filters.minSites > 0 ? 1 : 0) +
+    (filters.minRating > 0 ? 1 : 0)
 
-  const handleSearch = e => { e.preventDefault(); setQuery(inputVal); setPage(1) }
-  const handleTag = tag => { setTag(prev => prev === tag ? null : tag); setPage(1) }
-  const handleClear = () => { setQuery(''); setInput(''); setTag(null); setPage(1) }
+  const handleSearch = e => {
+    e.preventDefault()
+    setQuery(inputVal)
+    setPage(1)
+  }
+  const handleFilterApply = next => {
+    setFilters(next)
+    setPage(1)
+  }
+  const handleClearFilters = () => {
+    setFilters({
+      tags: [],
+      maxPrice: 40,
+      minSites: 0,
+      minRating: 0,
+    })
+    setPage(1)
+  }
+
+  useEffect(() => {
+    setPage(1)
+  }, [query])
 
   return (
     <>
       <SearchHero inputVal={inputVal} setInput={setInput} onSearch={handleSearch} />
 
       <Container className="py-4">
-        <FilterBar
-          activeTag={activeTag}
-          onTagClick={handleTag}
-          query={query}
-          onClear={handleClear}
+        <FilterMenu
+          show={showFilters}
+          onToggle={() => setShowFilters(prev => !prev)}
+          filters={filters}
+          onApply={handleFilterApply}
+          onClear={handleClearFilters}
+          allTags={ALL_TAGS}
+          activeFilterCount={activeFilterCount}
         />
+        {(inputVal || query || activeFilterCount > 0) && (
+          <div className="mb-3">
+            <Button
+              variant="outline-secondary"
+              className="rounded-pill"
+              onClick={() => {
+                setInput('')
+                setQuery('')
+                handleClearFilters()
+              }}
+            >
+              Clear search & filters
+            </Button>
+          </div>
+        )}
 
         <div className="d-flex justify-content-between align-items-center mb-3">
           <h2 className="section-title h5 mb-0">
             {filtered.length} {filtered.length === 1 ? 'campsite' : 'campsites'} found
-            {query && (
+            {query.trim() && (
               <span style={{ color: 'var(--smoke)', fontSize: '0.95rem', fontFamily: 'DM Sans' }}>
-                {' '}for "{query}"
+                {' '}for "{query.trim()}"
               </span>
             )}
           </h2>

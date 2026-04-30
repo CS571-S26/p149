@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom'
 import { Container, Row, Col } from 'react-bootstrap'
-import { campsites } from '../campsites'
+import { campsites } from '../Campsites'
 
 export default function AppFooter() {
   const totalReviews = campsites.reduce((sum, c) => sum + c.reviews, 0)
@@ -29,7 +29,7 @@ export default function AppFooter() {
               alignItems: 'center',
               gap: '8px',
             }}>
-              <span aria-hidden="true">🏕️</span> HikeBench
+              <span aria-hidden="true">🏕️</span> HikeFinder
             </div>
             <p style={{ fontSize: '0.85rem', lineHeight: 1.65, maxWidth: '260px' }}>
               Compare frontcountry and backcountry camps you can use as a base for day hikes and longer trips.
@@ -124,7 +124,7 @@ export default function AppFooter() {
           fontSize: '0.78rem',
           color: 'rgba(245,240,232,0.4)',
         }}>
-          <span>© {new Date().getFullYear()} HikeBench</span>
+          <span>© {new Date().getFullYear()} HikeFinder</span>
           <span>CS571 demo — client-side only</span>
         </div>
       </Container>

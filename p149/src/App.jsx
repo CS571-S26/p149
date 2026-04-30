@@ -11,8 +11,29 @@ import DetailPage  from './pages/DetailPage'
 import ComparePage from './pages/ComparePage'
 import LoginPage   from './pages/LoginPage'
 import RegisterPage from './pages/RegisterPage'
+import { campsites } from './Campsites'
+import { useAuth } from './context/AuthContext'
 
-const REVIEWS_STORAGE_KEY = 'hikebench-reviews'
+const REVIEWS_STORAGE_KEY = 'hikefinder-reviews'
+const SAVED_STORAGE_PREFIX = 'hikefinder-saved'
+const COMPARE_STORAGE_PREFIX = 'hikefinder-compare'
+
+function storageKey(prefix, userId) {
+  return `${prefix}-${userId}`
+}
+
+function loadCampList(prefix, userId) {
+  if (!userId) return []
+  try {
+    const raw = localStorage.getItem(storageKey(prefix, userId))
+    const ids = raw ? JSON.parse(raw) : []
+    if (!Array.isArray(ids)) return []
+    const idSet = new Set(ids)
+    return campsites.filter(c => idSet.has(c.id))
+  } catch {
+    return []
+  }
+}
 
 function loadStoredReviews() {
   try {
@@ -24,6 +45,7 @@ function loadStoredReviews() {
 }
 
 export default function App() {
+  const { user } = useAuth()
   const [saved,       setSaved]       = useState([])
   const [compared,    setCompared]    = useState([])
   const [userReviews, setUserReviews] = useState(loadStoredReviews)
@@ -31,6 +53,32 @@ export default function App() {
   useEffect(() => {
     localStorage.setItem(REVIEWS_STORAGE_KEY, JSON.stringify(userReviews))
   }, [userReviews])
+
+  useEffect(() => {
+    if (!user) {
+      setSaved([])
+      setCompared([])
+      return
+    }
+    setSaved(loadCampList(SAVED_STORAGE_PREFIX, user.id))
+    setCompared(loadCampList(COMPARE_STORAGE_PREFIX, user.id))
+  }, [user])
+
+  useEffect(() => {
+    if (!user) return
+    localStorage.setItem(
+      storageKey(SAVED_STORAGE_PREFIX, user.id),
+      JSON.stringify(saved.map(c => c.id))
+    )
+  }, [saved, user])
+
+  useEffect(() => {
+    if (!user) return
+    localStorage.setItem(
+      storageKey(COMPARE_STORAGE_PREFIX, user.id),
+      JSON.stringify(compared.map(c => c.id))
+    )
+  }, [compared, user])
 
   const toggleSave = camp => setSaved(prev =>
     prev.some(s => s.id === camp.id)
