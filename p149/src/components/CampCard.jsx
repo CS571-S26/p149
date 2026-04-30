@@ -1,15 +1,23 @@
 import { useNavigate } from 'react-router-dom'
 import { Card } from 'react-bootstrap'
 import Stars from './Stars'
+import { getCampImage } from '../utils/campImages'
 
 export default function CampCard({ camp, isSaved, onSave, isCompared, onCompare }) {
   const navigate = useNavigate()
+  const imageUrl = getCampImage(camp)
 
   return (
     <Card className="camp-card" onClick={() => navigate(`/camp/${camp.id}`)}>
-      <div className="card-img-placeholder" style={{ background: camp.gradient }}>
-        <span>{camp.icon}</span>
-      </div>
+      <Card.Img
+        variant="top"
+        src={imageUrl}
+        alt={`Scenery near ${camp.name}`}
+        onError={e => {
+          e.currentTarget.src =
+            'https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?auto=format&fit=crop&w=1400&q=80'
+        }}
+      />
       <Card.Body>
         <div className="card-title">{camp.name}</div>
         <div className="camp-location">

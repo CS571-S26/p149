@@ -4,6 +4,7 @@ import { campsites } from '../campsites'
 import Stars from '../components/Stars'
 import ReviewList from '../components/ReviewList'
 import ReviewForm from '../components/ReviewForm'
+import { getCampImage } from '../utils/campImages'
 
 export default function DetailPage({ saved, onSave, compared, onCompare, userReviews, onAddReview }) {
   const { id } = useParams()
@@ -20,11 +21,20 @@ export default function DetailPage({ saved, onSave, compared, onCompare, userRev
   const isSaved    = saved.some(s => s.id === camp.id)
   const isCompared = compared.some(c => c.id === camp.id)
   const myReviews  = userReviews[camp.id] || []
+  const imageUrl = getCampImage(camp)
 
   return (
     <div>
-      <div className="detail-hero" style={{ background: camp.gradient }}>
-        <span style={{ position: 'relative', zIndex: 1, fontSize: '5rem' }}>{camp.icon}</span>
+      <div className="detail-hero">
+        <img
+          className="detail-hero-image"
+          src={imageUrl}
+          alt={`Landscape at ${camp.name}`}
+          onError={e => {
+            e.currentTarget.src =
+              'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1400&q=80'
+          }}
+        />
         <div className="detail-overlay" />
       </div>
 
