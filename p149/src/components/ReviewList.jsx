@@ -9,11 +9,10 @@ export default function ReviewList({ staticReviews, userReviews }) {
 
   return (
     <div>
-      {/* Header with count + live average */}
       <div className="d-flex align-items-center justify-content-between mb-3 flex-wrap gap-2">
-        <div className="section-label" style={{ margin: 0 }}>
+        <h2 className="section-title h5 mb-0" id="reviews-summary">
           Reviews ({all.length})
-        </div>
+        </h2>
         {avg !== null && (
           <div className="d-flex align-items-center gap-2">
             <Stars rating={avg} />

@@ -8,27 +8,32 @@ const avgRating = (
 ).toFixed(1)
 
 const STATS = [
-  { value: campsites.length, label: 'Campsites' },
+  { value: campsites.length, label: 'Places' },
   { value: states,           label: 'States' },
   { value: totalReviews.toLocaleString(), label: 'Reviews' },
-  { value: avgRating + ' ★', label: 'Avg Rating' },
+  { value: avgRating + ' ★', label: 'Avg rating' },
 ]
 
 export default function SearchHero({ inputVal, setInput, onSearch }) {
   return (
     <div className="hero-section">
       <Container>
-        <h1>Find Your Perfect<br /><em>Wild Place</em></h1>
+        <h1>Browse camps and trail bases</h1>
         <p className="mt-2 mb-4">
-          Explore {campsites.length} curated campsites across America — rated by real adventurers.
+          Search {campsites.length} spots with hike-in access, filters by activity, and community ratings.
         </p>
-        <form className="search-bar" onSubmit={onSearch}>
-          <span style={{ fontSize: '1.1rem' }}>🔍</span>
+        <form className="search-bar" onSubmit={onSearch} role="search" aria-label="Search campsites">
+          <span style={{ fontSize: '1.1rem' }} aria-hidden="true">🔍</span>
+          <label htmlFor="hero-camp-search" className="visually-hidden">
+            Search by name, state, or tag
+          </label>
           <input
-            type="text"
-            placeholder="Search by name, state, or type…"
+            id="hero-camp-search"
+            type="search"
+            placeholder="Name, state, or tag…"
             value={inputVal}
             onChange={e => setInput(e.target.value)}
+            autoComplete="off"
           />
           <Button type="submit" variant="primary" size="sm">Search</Button>
         </form>

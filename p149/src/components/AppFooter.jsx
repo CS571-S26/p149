@@ -29,11 +29,10 @@ export default function AppFooter() {
               alignItems: 'center',
               gap: '8px',
             }}>
-              🏕️ CampRate
+              <span aria-hidden="true">🏕️</span> HikeBench
             </div>
             <p style={{ fontSize: '0.85rem', lineHeight: 1.65, maxWidth: '260px' }}>
-              Discover and rate America's finest campsites — from mountain summits to ocean bluffs,
-              curated by real adventurers.
+              Compare frontcountry and backcountry camps you can use as a base for day hikes and longer trips.
             </p>
           </Col>
 
@@ -125,8 +124,8 @@ export default function AppFooter() {
           fontSize: '0.78rem',
           color: 'rgba(245,240,232,0.4)',
         }}>
-          <span>© {new Date().getFullYear()} CampRate — Find your wild place</span>
-          <span>Built with ❤️ for the outdoors</span>
+          <span>© {new Date().getFullYear()} HikeBench</span>
+          <span>CS571 demo — client-side only</span>
         </div>
       </Container>
     </footer>

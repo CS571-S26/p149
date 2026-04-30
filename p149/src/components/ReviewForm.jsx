@@ -1,22 +1,24 @@
 import { useState } from 'react'
-import { Button } from 'react-bootstrap'
+import { Link, useLocation } from 'react-router-dom'
+import { Button, Alert, Form } from 'react-bootstrap'
 import StarPicker from './StarPicker'
+import { useAuth } from '../context/AuthContext'
 
 export default function ReviewForm({ campId, onSubmit }) {
-  const [author, setAuthor]   = useState('')
-  const [stars,  setStars]    = useState(0)
-  const [text,   setText]     = useState('')
-  const [error,  setError]    = useState('')
+  const { user } = useAuth()
+  const location = useLocation()
+  const [stars, setStars] = useState(0)
+  const [text, setText] = useState('')
+  const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
 
   const handleSubmit = e => {
     e.preventDefault()
-    if (!author.trim()) return setError('Please enter your name.')
-    if (stars === 0)    return setError('Please select a star rating.')
+    if (!user) return
+    if (stars === 0) return setError('Please select a star rating.')
     if (text.trim().length < 10) return setError('Review must be at least 10 characters.')
 
-    onSubmit(campId, { author: author.trim(), stars, text: text.trim() })
-    setAuthor('')
+    onSubmit(campId, { author: user.username, stars, text: text.trim() })
     setStars(0)
     setText('')
     setError('')
@@ -24,108 +26,88 @@ export default function ReviewForm({ campId, onSubmit }) {
     setTimeout(() => setSuccess(false), 3500)
   }
 
-  return (
-    <div style={{
-      background: 'var(--sand)',
-      border: '1px solid var(--border)',
-      borderRadius: '14px',
-      padding: '22px 24px',
-      marginTop: '8px',
-    }}>
-      <div style={{
-        fontFamily: 'Playfair Display, serif',
-        fontSize: '1.05rem',
-        color: 'var(--forest)',
-        fontWeight: 700,
-        marginBottom: '16px',
-      }}>
-        ✍️ Leave a Review
+  if (!user) {
+    return (
+      <div
+        style={{
+          background: 'var(--sand)',
+          border: '1px solid var(--border)',
+          borderRadius: '14px',
+          padding: '22px 24px',
+          marginTop: '8px',
+        }}
+      >
+        <h3 className="h6" style={{ fontFamily: 'Playfair Display, serif', color: 'var(--forest)', fontWeight: 700 }}>
+          Write a review
+        </h3>
+        <p className="text-muted small mb-3">
+          Log in to add your rating and notes for this place. Reviews are saved in this browser only.
+        </p>
+        <Button as={Link} to="/login" state={{ from: location }} variant="primary" className="rounded-pill me-2">
+          Log in
+        </Button>
+        <Button as={Link} to="/register" state={{ from: location }} variant="outline-primary" className="rounded-pill">
+          Register
+        </Button>
       </div>
+    )
+  }
+
+  return (
+    <div
+      style={{
+        background: 'var(--sand)',
+        border: '1px solid var(--border)',
+        borderRadius: '14px',
+        padding: '22px 24px',
+        marginTop: '8px',
+      }}
+    >
+      <h3 className="h6" style={{ fontFamily: 'Playfair Display, serif', color: 'var(--forest)', fontWeight: 700, marginBottom: '16px' }}>
+        Write a review
+      </h3>
+      <p className="small text-muted mb-3">
+        Posting as <strong>{user.username}</strong>.
+      </p>
 
       {success && (
-        <div style={{
-          background: 'var(--moss)',
-          color: 'white',
-          borderRadius: '8px',
-          padding: '10px 14px',
-          fontSize: '0.88rem',
-          marginBottom: '14px',
-        }}>
-          ✓ Your review was posted! Thanks for sharing.
-        </div>
+        <Alert variant="success" className="py-2 small mb-3">
+          Review posted.
+        </Alert>
       )}
 
-      <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label style={{ fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--smoke)', fontWeight: 500, display: 'block', marginBottom: '6px' }}>
-            Your Name
-          </label>
-          <input
-            type="text"
-            value={author}
-            onChange={e => setAuthor(e.target.value)}
-            placeholder="e.g. TrailDog92"
-            maxLength={40}
-            style={{
-              width: '100%',
-              border: '1.5px solid var(--border)',
-              borderRadius: '8px',
-              padding: '8px 12px',
-              fontSize: '0.9rem',
-              fontFamily: 'DM Sans, sans-serif',
-              outline: 'none',
-              background: 'white',
-              color: 'var(--charcoal)',
-            }}
-          />
-        </div>
+      <Form onSubmit={handleSubmit}>
+        <Form.Group className="mb-3">
+          <Form.Label id="review-rating-label" className="small text-uppercase text-muted fw-medium">
+            Rating
+          </Form.Label>
+          <StarPicker value={stars} onChange={setStars} labelledBy="review-rating-label" />
+        </Form.Group>
 
-        <div className="mb-3">
-          <label style={{ fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--smoke)', fontWeight: 500, display: 'block', marginBottom: '8px' }}>
-            Your Rating
-          </label>
-          <StarPicker value={stars} onChange={setStars} />
-        </div>
-
-        <div className="mb-3">
-          <label style={{ fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.06em', color: 'var(--smoke)', fontWeight: 500, display: 'block', marginBottom: '6px' }}>
-            Your Review
-          </label>
-          <textarea
+        <Form.Group className="mb-3" controlId="review-text">
+          <Form.Label className="small text-uppercase text-muted fw-medium">Review</Form.Label>
+          <Form.Control
+            as="textarea"
+            rows={4}
             value={text}
             onChange={e => setText(e.target.value)}
-            placeholder="Tell others what made this campsite special (or not)…"
-            rows={4}
+            placeholder="Trail conditions, crowds, water sources, what worked for you…"
             maxLength={600}
-            style={{
-              width: '100%',
-              border: '1.5px solid var(--border)',
-              borderRadius: '8px',
-              padding: '8px 12px',
-              fontSize: '0.88rem',
-              fontFamily: 'DM Sans, sans-serif',
-              resize: 'vertical',
-              outline: 'none',
-              background: 'white',
-              color: 'var(--charcoal)',
-              lineHeight: 1.55,
-            }}
+            style={{ fontSize: '0.88rem', lineHeight: 1.55 }}
           />
-          <div style={{ fontSize: '0.75rem', color: 'var(--smoke)', textAlign: 'right', marginTop: '3px' }}>
-            {text.length} / 600
-          </div>
-        </div>
+          <Form.Text className="text-end d-block">{text.length} / 600</Form.Text>
+        </Form.Group>
 
         {error && (
-          <div style={{ color: 'var(--ember)', fontSize: '0.83rem', marginBottom: '10px' }}>
-            ⚠ {error}
-          </div>
+          <p className="text-danger small mb-3" role="alert">
+            {error}
+          </p>
         )}
 
         <Button type="submit" variant="primary" style={{ borderRadius: '50px', padding: '8px 24px' }}>
-          Post Review
+          Post review
         </Button>
-      </form>
+      </Form>
     </div>
   )
 }

@@ -45,14 +45,14 @@ export default function SearchPage({ saved, onSave, compared, onCompare }) {
         />
 
         <div className="d-flex justify-content-between align-items-center mb-3">
-          <div className="section-title" style={{ fontSize: '1.15rem' }}>
+          <h2 className="section-title h5 mb-0">
             {filtered.length} {filtered.length === 1 ? 'campsite' : 'campsites'} found
             {query && (
               <span style={{ color: 'var(--smoke)', fontSize: '0.95rem', fontFamily: 'DM Sans' }}>
                 {' '}for "{query}"
               </span>
             )}
-          </div>
+          </h2>
           <span style={{ fontSize: '0.82rem', color: 'var(--smoke)' }}>
             Page {page} of {Math.max(totalPages, 1)}
           </span>

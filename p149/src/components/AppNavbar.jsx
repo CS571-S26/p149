@@ -1,19 +1,20 @@
 import { NavLink } from 'react-router-dom'
 import { Navbar, Nav, Container } from 'react-bootstrap'
+import UserMenu from './UserMenu'
 
 export default function AppNavbar({ savedCount, compareCount }) {
   return (
     <Navbar expand="md" className="camp-navbar">
       <Container>
         <Navbar.Brand as={NavLink} to="/">
-          <span className="brand-icon">🏕️</span>
-          CampRate
+          <span className="brand-icon" aria-hidden="true">🏕️</span>
+          HikeBench
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="main-nav" />
         <Navbar.Collapse id="main-nav">
-          <Nav className="ms-auto gap-1">
+          <Nav className="ms-auto gap-1 align-items-md-center">
             <Nav.Link as={NavLink} to="/" end>
-              Explore
+              Browse
             </Nav.Link>
             <Nav.Link as={NavLink} to="/saved">
               Saved
@@ -29,6 +30,7 @@ export default function AppNavbar({ savedCount, compareCount }) {
                 </span>
               )}
             </Nav.Link>
+            <UserMenu />
           </Nav>
         </Navbar.Collapse>
       </Container>

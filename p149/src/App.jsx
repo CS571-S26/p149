@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { Routes, Route } from 'react-router-dom'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import './App.css'
@@ -9,11 +9,28 @@ import SearchPage  from './pages/SearchPage'
 import SavedPage   from './pages/SavedPage'
 import DetailPage  from './pages/DetailPage'
 import ComparePage from './pages/ComparePage'
+import LoginPage   from './pages/LoginPage'
+import RegisterPage from './pages/RegisterPage'
+
+const REVIEWS_STORAGE_KEY = 'hikebench-reviews'
+
+function loadStoredReviews() {
+  try {
+    const raw = localStorage.getItem(REVIEWS_STORAGE_KEY)
+    return raw ? JSON.parse(raw) : {}
+  } catch {
+    return {}
+  }
+}
 
 export default function App() {
   const [saved,       setSaved]       = useState([])
   const [compared,    setCompared]    = useState([])
-  const [userReviews, setUserReviews] = useState({}) // { [campId]: [{author, stars, text}] }
+  const [userReviews, setUserReviews] = useState(loadStoredReviews)
+
+  useEffect(() => {
+    localStorage.setItem(REVIEWS_STORAGE_KEY, JSON.stringify(userReviews))
+  }, [userReviews])
 
   const toggleSave = camp => setSaved(prev =>
     prev.some(s => s.id === camp.id)
@@ -61,6 +78,8 @@ export default function App() {
         <Route path="/compare" element={
           <ComparePage compared={compared} onRemove={toggleCompare} />
         } />
+        <Route path="/login" element={<LoginPage />} />
+        <Route path="/register" element={<RegisterPage />} />
       </Routes>
 
       <AppFooter />
